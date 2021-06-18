@@ -1,0 +1,27 @@
+from sklearn.datasets import load_iris
+iris=load iris()
+print(iris)
+x=iris.data
+y=iris.target
+
+from sklearn.tree import DecisionTreeClassifier
+ML=DecisionTreeClassifier(criterion='entropy')    #info gain........default = gini index
+ML=ML.fit(x,y)
+
+op=ML.predict(3.5,4.5,5.5,6.5)
+print(op)
+
+-----------------------------------
+
+fe=iris.feature_names
+cn=iris.target_names
+
+import graphviz
+from sklearn import tree
+tree.export_graphviz( ML, feature_names=fe , target_names=cn , 
+                      filled=True , rounded=True , special_characters=True  )
+
+graph=graphviz.Source(dot_data)
+
+graph.render("dt")    # to save as file
+graph          # to print

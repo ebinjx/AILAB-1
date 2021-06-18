@@ -1,0 +1,27 @@
+from sklearn.datasets import load_wine
+wine=load_wine()
+x=wine.data
+y=wine.target
+
+from sklearn.tree import DecisionTreeClassifier
+ml=DecisionTreeClassifier() 
+ml=ml.fit(x,y)
+
+import numpy as np
+op=ml.predict(np.random.rand(1,13))
+print(op)
+
+op1=ml.predict([[14.23,	1.71,	2.43,	15.6,	127,	2.8,	3.06,	.28,	2.29,	5.64,	1.04,	3.92,	1065]])
+print(op1)
+
+fe=wine.feature_names
+cn=wine.target_names
+
+import graphviz
+from sklearn import tree
+dot_data=tree.export_graphviz(ml,feature_names=fe, class_names=cn,filled=True,rounded=True,special_characters=True)
+
+graph=graphviz.Source(dot_data)
+ 
+graph.render("dt_wine")    # to save as file
+graph          # to print
