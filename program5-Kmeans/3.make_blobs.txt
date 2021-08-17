@@ -1,0 +1,21 @@
+#1.dataset
+
+from sklearn.datasets import make_blobs
+X,y= make_blobs(n_samples=180, centers=3,n_features=4,cluster_std=0.60,random_state=42)
+ 
+#2 Load K means & Fit Data
+ 
+from sklearn.cluster import KMeans
+ML=KMeans(n_clusters=3,max_iter=4)
+ML=ML.fit(X)
+ 
+#3. Centers & Labels
+centers=ML.cluster_centers_
+labels=ML.labels_
+print(centers)
+print(labels)
+ 
+#4. Plotting graph
+ 
+import matplotlib.pyplot as plt
+plt.scatter(X[:,0],X[:,1],c=labels,cmap="rainbow")

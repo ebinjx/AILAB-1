@@ -1,0 +1,23 @@
+#1.dataset(pandas)
+
+import pandas as pd
+iris=pd.read_csv("/content/heart.csv")
+x=iris[["age","chol"]]
+
+#2. load Kmeans & fit
+from sklearn.cluster import KMeans
+ML=KMeans(n_clusters=3, max_iter=4)
+
+ML=ML.fit(x)
+
+#3.centres and labels
+centres=ML.cluster_centers_
+labels=ML.labels_
+print(centres)
+print(labels)
+
+# graph
+import matplotlib.pyplot as plt
+xaxis=iris["age"]
+yaxis=iris["chol"]
+plt.scatter(x=xaxis,y=yaxis,c=labels,cmap="rainbow")
