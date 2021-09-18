@@ -1,0 +1,52 @@
+#1.load and process MNIST
+from tensorflow import keras
+mnDB=keras.datasets.mnist
+(x_train,y_train),(x_test,y_test)=mnDB.load_data()
+
+
+#convert to 1 channel
+
+x_train=x_train.reshape((60000,28,28,1))
+x_test=x_test.reshape((10000,28,28,1))
+
+#normalise data
+
+x_train=x_train.astype("float32")/255
+x_test=x_test.astype("float32")/255
+
+#2. create cnn layers
+ml=keras.models.Sequential()
+
+ml.add(keras.layers.Conv2D(32,(3,3),activation="relu",input_shape=x_train.shape[1:]))
+
+ml.add(keras.layers.Conv2D(64,(3,3),activation="relu"))
+
+ml.add(keras.layers.BatchNormalization())
+
+ml.add(keras.layers.MaxPooling2D((2,2)))
+
+ml.add(keras.layers.Dropout(0.25))
+
+ml.add(keras.layers.Flatten())
+
+ml.add(keras.layers.Dense(128,activation="relu"))
+
+ml.add(keras.layers.Dropout(0.25))
+
+ml.add(keras.layers.Dense(10,activation="softmax"))
+
+ml.summary()
+
+#3. compile and test
+
+ml.compile(loss="sparse_categorical_crossentropy", optimizer="adam",metrics="accuracy")
+
+es=keras.callbacks.EarlyStopping(monitor='loss',patience=10,restore_best_weights=True)
+cp=keras.callbacks.ModelCheckpoint("/content/cnn.h5",monitor='val_loss')
+
+ml.fit(x_train,y_train,epochs=2,batch_size=16,callbacks=[es,cp])
+
+
+testloss,testaccuracy=ml.evaluate(x_test,y_test)
+print("test loss = ",testloss)
+print("test accuracy = ",testaccuracy)
